@@ -287,13 +287,13 @@ def AddDtbo(output_zip):
   Uses the image under IMAGES/ if it already exists. Otherwise looks for the
   image under PREBUILT_IMAGES/, signs it as needed, and returns the image name.
   """
-  img = OutputFile(output_zip, OPTIONS.input_tmp, "IMAGES", "dtbo.img")
+  img = OutputFile(output_zip, OPTIONS.input_tmp, "IMAGES", "odmdtbo.img")
   if os.path.exists(img.name):
     logger.info("dtbo.img already exists; no need to rebuild...")
     return img.name
 
   dtbo_prebuilt_path = os.path.join(
-      OPTIONS.input_tmp, "PREBUILT_IMAGES", "dtbo.img")
+      OPTIONS.input_tmp, "PREBUILT_IMAGES", "odmdtbo.img")
   assert os.path.exists(dtbo_prebuilt_path)
   shutil.copy(dtbo_prebuilt_path, img.name)
 
@@ -303,7 +303,7 @@ def AddDtbo(output_zip):
     part_size = OPTIONS.info_dict["dtbo_size"]
     # The AVB hash footer will be replaced if already present.
     cmd = [avbtool, "add_hash_footer", "--image", img.name,
-           "--partition_size", str(part_size), "--partition_name", "dtbo"]
+           "--partition_size", str(part_size), "--partition_name", "odmdtbo"]
     common.AppendAVBSigningArgs(cmd, "dtbo")
     args = OPTIONS.info_dict.get("avb_dtbo_add_hash_footer_args")
     if args and args.strip():
